@@ -1,0 +1,89 @@
+<!DOCTYPE>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+        </div>
+        <button onclick="scrollUp()" id="scroll-up-btn">Up</button>
+    </div>
+</body>
+<script>
+    document.querySelector('.content').addEventListener('click', function (event) {
+        if (event.target && event.target.classList.contains('add-btn')) {
+            const title_div = event.target.closest('.title');
+            const id = title_div.dataset.id;
+            const img_url = title_div.dataset.img;
+            Add(id, img_url);
+        }
+    })
+
+    async function Add(id, img_url) {
+        const response = await fetch('/add', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({id: id, img_url: img_url})
+        });
+    }
+
+    async function IsReady() {
+        const response = await fetch('/cmoa');
+        const json = await response.json();
+
+        if (json.ready) {
+            const titles = json.data;
+            let html = '';
+            
+            for (let title of titles) {
+                html += `
+                <div class="title" data-id="${title.id}" data-img="${title.img}">
+                    <div class="top">
+                        <div class="img-wrapper">
+                            <img src="${title.img}" alt="${title.id}">
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <button type="button" class="add-btn">Add</button>
+                        <a href="https://www.cmoa.jp/title/${title.id}" target="_blank">
+                            <div class="button-container">
+                                <p>Open</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                `
+            }
+            document.querySelector('.content').innerHTML = html;
+        } else {
+            setTimeout(IsReady, 1000);
+        }
+    }
+
+    const scroll_up_btn = document.getElementById('scroll-up-btn');
+    window.onscroll = function() {scroll()};
+
+    function scroll() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            scroll_up_btn.style.display = 'block';
+        } else {
+            scroll_up_btn.style.display = 'none';
+        } 
+    }
+
+    function scrollUp() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+
+    IsReady()
+</script>
+</html>
