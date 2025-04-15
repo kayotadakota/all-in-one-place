@@ -5,18 +5,16 @@ import time
 from crochet import setup, run_in_reactor
 setup()
 
-from flask import Flask, render_template, jsonify, request
+from flask import Blueprint, render_template, jsonify, request
 
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-#import database
 from database.db import Session
 from database.models import Titles
-from cmoa.cmoa.spiders.cmoa_spider import CmoaSpider, CmoaAdditionalInfoSpider
+from cmoa.spiders.cmoa_spider import CmoaSpider, CmoaAdditionalInfoSpider
 
-
-app = Flask(__name__)
+main_bp = Blueprint('main', __name__)
 r = redis.Redis(host='localhost', port=6379)
 
 
@@ -38,7 +36,7 @@ def get_additional_info(id, img_url):
     )
 
 
-@app.route('/')
+@main_bp.route('/')
 def index():
     cache_timeout = 86400 # 24 hours
     now = time.time()
@@ -52,7 +50,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/cmoa')
+@main_bp.route('/cmoa')
 def cmoa_results():
     titles = r.lrange('titles', 0, -1)
 
@@ -63,7 +61,7 @@ def cmoa_results():
     #titles = [json.loads(item) for item in r.lrange('titles', 0, -1)]
 
 
-@app.route('/add', methods=['POST'])
+@main_bp.route('/add', methods=['POST'])
 def add_info():
     data = request.get_json()
     title_id = data['id']
