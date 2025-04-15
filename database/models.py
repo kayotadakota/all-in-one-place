@@ -9,10 +9,10 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
-class Titles(Base):
-    __tablename__ = 'titles'
+class Title(Base):
+    __tablename__ = 'title'
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
+    id: Mapped[str] = mapped_column(primary_key=True, autoincrement=False)
     url: Mapped[str] = mapped_column(String)
     img_url: Mapped[str] = mapped_column(String)
     release_date: Mapped[datetime.date] = mapped_column(Date)

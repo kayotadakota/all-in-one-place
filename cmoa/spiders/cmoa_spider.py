@@ -2,8 +2,12 @@ import scrapy
 import redis
 import json
 import time
+import re
 
 from datetime import date
+
+from database.db import Session
+from database.models import Title
 
 r = redis.Redis('localhost', port=6379)
 
@@ -32,17 +36,15 @@ class CmoaSpider(scrapy.Spider):
 class CmoaAdditionalInfoSpider(scrapy.Spider):
     name = 'cmoa_additional_info'
 
-    # ^(?:\d{1,2}\/\d{1,2})
     def parse(self, response):
-        date_str = response.css('div.nextReleaseBox.this p.date').re_first(r'^(?:\d{1,2}\/\d{1,2})')
-        id = self.id
-        img_url = self.img_url
-        url = response.request.url
+        date_str = response.css('div.nextReleaseBox.this p.date::text').get()
 
-        if date_str:
-            year = date.today().year
-            month, day = (int(_) for _ in date_str.split('/'))
+        yield {
+            'id': self.id,
+            'url': response.request.url,
+            'img_url': self.img_url,
+            'release_date': date_str
+        }
 
-        # Add the title to the database here
 
         
