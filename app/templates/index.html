@@ -11,14 +11,14 @@
 <body>
     <div class="container">
         <div class="nav-bar">
-            <ul>
+            <!-- <ul>
                 <a href=""><li>Cmoa</li></a>
                 <a href=""><li>Comico JP</li></a>
                 <a href=""><li>Comico KR</li></a>
                 <a href=""><li>Comico EN</li></a>
                 <a href=""><li>Kakao</li></a>
                 <a href=""><li>See results</li></a>
-            </ul>
+            </ul> -->
         </div>
         <div class="content">
         </div>
@@ -74,7 +74,15 @@
             }
             document.querySelector('.content').innerHTML = html;
         } else {
-            setTimeout(IsReady, 1000);
+            let timeout_id = setTimeout(IsReady, 1000);
+            if (timeout_id >= 20) {
+                clearTimeout(timeout_id);
+                html = `
+                <div class="alert">
+                    <p>It seems like there is no new releases.</p>
+                </div>`
+                document.querySelector('.content').innerHTML = html;
+            }
         }
     }
 
