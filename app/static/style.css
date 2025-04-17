@@ -72,6 +72,22 @@ a {
     text-decoration: none;
 }
 
+.alert {
+    background-color: rgb(206, 49, 49);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    height: 70px;
+    margin: 20px;
+}
+
+.alert p {
+    font-family: "Fredoka", sans-serif;
+    font-size: 15px;
+    color: white;
+}
+
 .bottom .button-container:hover {
     border: solid 1px rgb(226, 226, 226);
 }
