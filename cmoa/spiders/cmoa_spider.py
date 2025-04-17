@@ -18,11 +18,11 @@ class CmoaSpider(scrapy.Spider):
         'https://www.cmoa.jp/newrelease/schedule/?page=2',
         'https://www.cmoa.jp/newrelease/schedule/?page=3',
         'https://www.cmoa.jp/newrelease/schedule/?page=4',
-        'https://www.cmoa.jp/newrelease/schedule/?page=5',
+        'https://www.cmoa.jp/newrelease/schedule/?page=9',
     ]
 
     def parse(self, response):
-        for title in response.css('div.h_long_thum_w_4.volume'):
+        for title in response.css('li.title_wrap'):
             if title.css('div.vol_num::text').re(r'^1(?:-\d+)?\D.*$'):
                 item = {
                     'img': f'https:{title.css('img::attr(src)').get()}',
