@@ -1,0 +1,57 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/cmoa_results.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <title>Cmoa results</title>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            {% for title in titles %}
+                <div class="title" data-id="{{ title.id }}" data-img="${title.img}">
+                    <div class="top">
+                        <div class="img-wrapper">
+                            <img src="{{ title.img_url }}" alt="{{ title.id }}">
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <div class="release_date">
+                            <p>{{ title.release_date }}</p>
+                        </div>
+                        <div class="buttons_panel">
+                            <button type="button" class="delete-btn">Delete</button>
+                            <a href="https://www.cmoa.jp/title/{{ title.id }}" target="_blank">
+                            <div class="button-container">
+                                <p>Open</p>
+                            </div>
+                        </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <button onclick="scrollUp()" id="scroll-up-btn">Up</button>
+    </div>
+</body>
+<script>
+    const scroll_up_btn = document.getElementById('scroll-up-btn');
+    window.onscroll = function() {scroll()};
+
+    function scroll() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            scroll_up_btn.style.display = 'block';
+        } else {
+            scroll_up_btn.style.display = 'none';
+        } 
+    }
+
+    function scrollUp() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+</script>
+</html>
