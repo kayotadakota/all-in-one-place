@@ -15,3 +15,12 @@ def fetch_cmoa_results() -> list[tuple]:
         session.expunge_all()
 
     return titles
+
+
+def delete_title(id: str) -> bool:
+    with Session.begin() as session:
+        title = session.get(Title, id)
+        if title:
+            session.delete(title)
+            return True
+    return False
