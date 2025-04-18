@@ -102,6 +102,13 @@ a {
     overflow: hidden;
 }
 
+.bottom button:active,
+.bottom .button-container:active,
+.bottom .button-container p:active {
+    background-color: rgb(163, 163, 163);
+    color: white;
+}
+
 .img-wrapper img {
     max-width: 100%;
     height: auto;
