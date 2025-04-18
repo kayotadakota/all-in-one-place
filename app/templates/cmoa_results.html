@@ -38,6 +38,24 @@
     </div>
 </body>
 <script>
+    document.querySelector('.content').addEventListener('click', function (event) {
+        if (event.target && event.target.classList.contains('delete-btn')) {
+            const title_div = event.target.closest('.title');
+            const id = title_div.dataset.id;
+            deleteTitle(id, title_div);
+        }
+    })
+
+    async function deleteTitle(id, title_div) {
+        const response = await fetch(`/delete/${id}`, {method: 'DELETE'});
+        if (response.status == 204) {
+            title_div.remove()
+        } else {
+            const data = await response.json()
+            console.log(data.msg)
+        }
+    }
+
     const scroll_up_btn = document.getElementById('scroll-up-btn');
     window.onscroll = function() {scroll()};
 
