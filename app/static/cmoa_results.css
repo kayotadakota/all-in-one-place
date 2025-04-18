@@ -93,6 +93,10 @@ a {
     color: white;
 }
 
+.delete-btn:active {
+    background-color: black;
+}
+
 .img-wrapper img {
     max-width: 100%;
     height: auto;
