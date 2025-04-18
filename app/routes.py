@@ -5,13 +5,13 @@ import time
 from crochet import setup, run_in_reactor
 setup()
 
-from flask import Blueprint, render_template, jsonify, request, Response
+from flask import Blueprint, render_template, jsonify, request, Response, redirect, url_for
 
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
 from cmoa.spiders.cmoa_spider import CmoaSpider, CmoaAdditionalInfoSpider
-from app.services import get_cmoa_results
+from app.services import get_cmoa_results, serve_delete_title
 
 
 main_bp = Blueprint('main', __name__)
@@ -74,6 +74,17 @@ def add_info():
 def list_cmoa_results():
     titles = get_cmoa_results()
     return render_template('cmoa_results.html', titles=titles)
+
+
+@main_bp.route('/delete/<title_id>', methods=['DELETE'])
+def delete_title(title_id: str):
+    res = serve_delete_title(title_id)
+    if res['deleted']:
+        return jsonify(res), 204
+    return jsonify(res), 400
+
+
+
 
 # run the script after 12 p.m.
 # if a cover looks profitable click on the 'add' button and the app will make a request for additional info and save it to the database.
