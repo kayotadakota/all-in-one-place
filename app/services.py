@@ -1,4 +1,4 @@
-from database.db import fetch_cmoa_results
+from database.db import fetch_cmoa_results, delete_title
 
 
 def get_cmoa_results() -> list[dict]:
@@ -14,3 +14,10 @@ def get_cmoa_results() -> list[dict]:
         'release_date': title[0].release_date}
         for title in titles
     ]
+
+
+def serve_delete_title(id: str):
+    deleted = delete_title(id)
+    if deleted:
+        return {'deleted': True, 'msg': f'Title-{id} has been deleted.'}
+    return {'deleted': False, 'msg': f'Title-{id} has not been found.'}
