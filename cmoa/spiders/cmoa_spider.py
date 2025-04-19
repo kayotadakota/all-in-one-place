@@ -2,12 +2,7 @@ import scrapy
 import redis
 import json
 import time
-import re
 
-from datetime import date
-
-from database.db import Session
-from database.models import Title
 
 r = redis.Redis('localhost', port=6379)
 
