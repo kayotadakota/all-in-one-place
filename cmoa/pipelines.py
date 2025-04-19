@@ -12,8 +12,7 @@ from datetime import date
 from itemadapter import ItemAdapter
 from scrapy.exceptions import DropItem
 
-from database.db import Session
-from database.models import Title
+from database.db import add_title
 
 
 class CmoaPipeline:
@@ -30,11 +29,15 @@ class CmoaPipeline:
             
             month, day = (int(_) for _ in release_date.group(0).split('/'))
             year = date.today().year
-            
-            title = Title(id=id, url=url, img_url=img_url, release_date=date(year, month, day))
-            
-            with Session.begin() as session:
-                print(session)
-                session.add(title)
+
+            inserted = add_title({
+                'id': id,
+                'url': url,
+                'img_url': img_url,
+                'release_date': date(year, month, day)
+            })
+
+            if not inserted:
+                spider.logger.info(f'Duplicate item: {id}')
 
         return item
